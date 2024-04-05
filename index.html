@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Utilities</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div id="Password_Generator">
+        <h1><b><i><u>Password Generator</u></i></b></h1>
+      <div id="Password_Input">
+          <label for="Password_Length">Length:</label>
+          <input type="number" id="Password_Length" value="12"/>
+          <button onclick="Clicked_Generate_Password()">Click To Generate Password</button> <br>
+          <input checked type="checkbox" id="P_Symbols"/>
+          <label for="P_Symbols">Symbols</label>
+          <input checked type="checkbox" id="P_Lower"/>
+          <label for="P_Lower">Lower Case</label>
+          <input checked type="checkbox" id="P_Capitals"/>
+          <label for="P_Capitals">Capitals</label>
+          <input checked type="checkbox" id="P_Numbers"/>
+          <label for="P_Numbers">Numbers</label>
+      </div>
+      <input id="Password_Output" readonly />
+      <button onclick="Copy_Password()">Copy!</button>
+    </div>
+    
+    <div id="Random_Number_Generator">
+        <h1><b><i><u>Number Generator</u></i></b></h1>
+        <div id="RN_Input">
+            <label for="Random_Number_Min">Min:</label>
+            <input type="number" id="Random_Number_Min" value="0"/>
+            <label for="Random_Number_Max">Max:</label>
+            <input type="number" id="Random_Number_Max" value="100"/>
+            <button onclick="Clicked_Random_Number_Generator()">Click To Generate Random Number</button>
+        </div>
+        <input id="RN_Output" readonly />
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
