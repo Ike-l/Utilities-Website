@@ -142,31 +142,31 @@ function clicked_base_converter() {
     const old_base = parseFloat(base_converter_old_base.value)
     const new_base = parseFloat(base_converter_new_base.value)
     
-    let errors = ""
+    let errors = "\n"
 
     if (number === "") {
-        errors += "\nNumber is empty!\n"
+        errors += "Number is empty!\n"
     }
     if (old_base < 1) {
-        errors += "\nOld Base less than 1!\n"
+        errors += "Old Base less than 1!\n"
     } else if (isNaN(old_base)) {
-        errors += "\nNot a Valid Number in Old Base!\n"
+        errors += "Not a Valid Number in Old Base!\n"
     }
     if (new_base < 1) {
-        errors += "\nNew Base less than 1!\n"
+        errors += "New Base less than 1!\n"
     } else if (new_base > 62) {
-        errors += "\nNew Base greater than 62!\n-- Cannot guarantee integrity since algorithm cannot represent 62\n"
+        errors += "New Base greater than 62!\n-- Cannot guarantee integrity since algorithm cannot represent 62\n"
     } else if (isNaN(new_base)) {
-        errors += "\nNot a Valid Number in New Base!\n"
+        errors += "Not a Valid Number in New Base!\n"
     }
     const character_map = generate_character_map()
     for (let num of Object.values(number)) {
         if (character_map[num] >= old_base) {
-            errors += "\nNumber does not Satisfy Input Base!\n"
+            errors += "Number does not Satisfy Input Base!\n"
         }
     }
 
-    if (errors !== "") {
+    if (errors !== "\n") {
         console.error(errors)
         return
     }
@@ -177,6 +177,9 @@ function clicked_base_converter() {
     base_converter_output.value = new_number
 }
 function convert_base(number, old_base, new_base) {
+    // 2 step process
+    // - convert from old base to denary
+    // - convert from denary to new base
     const number_array = Object.values(number)
     const character_map = generate_character_map()
     let placement_offset = number_array.length-1
@@ -187,15 +190,17 @@ function convert_base(number, old_base, new_base) {
 
     const character_map_inverse = generate_character_map_inverse()
     const new_number_array = []
+    const log_new_base = Math.log(new_base)
     while (base10_equivalent > 0) {
-        
         // let new_temp_number = base10_equivalent
         // let new_position = -1
         // while(new_temp_number > 0) {
         //     new_temp_number = Math.floor(new_temp_number / new_base)
         //     new_position++
         // }
-        const new_position = Math.floor(log_base(base10_equivalent, new_base))
+        
+        // log base n
+        const new_position = Math.floor(Math.log(base10_equivalent) / log_new_base)
 
         const magnitude = new_base**new_position
         const bit = Math.floor(base10_equivalent / magnitude)
@@ -205,6 +210,7 @@ function convert_base(number, old_base, new_base) {
     }
 
     let new_number = ""
+    // Empty Items from skipping "magnitudes"
     for (let num of new_number_array.reverse()) {
         if (num) {
             new_number += num
@@ -213,9 +219,6 @@ function convert_base(number, old_base, new_base) {
         }
     }
     return new_number
-}
-function log_base(number, base) {
-    return Math.log(number) / Math.log(base)
 }
 function generate_character_map() {
     const characters_map = {
@@ -246,18 +249,25 @@ function test_convert_base() {
 }
 
 /*
-find lowest power of new base in number
-push number DIV lowest power into array
-subtract same number from number 
-*/
-
-/*
 Probability Distributions.
 */
 /*
-Stopwatch.
+Word counter (clipboard)
 */
-
-/*
-Timer.
-*/
+function clicked_word_counter() {
+    if (!navigator.clipboard.readText) {
+        const optional_word_counter_input = document.getElementById("optional_word_counter_input")
+        const text = optional_word_counter_input.value
+        count_and_output(text)
+        return
+    }
+    const b = read_clipboard().then(text => count_and_output(text))
+}
+async function read_clipboard() {
+    return await navigator.clipboard.readText()
+}
+function count_and_output(text) {
+    const word_counter_output = document.getElementById("word_counter_output")
+    const word_count = text.split(" ").filter(x => x !== "").length
+    word_counter_output.value = word_count
+}
